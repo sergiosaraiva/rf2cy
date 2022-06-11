@@ -3,39 +3,11 @@ using System.Text.RegularExpressions;
 
 namespace rf2cy
 {
+
     class Program
     {
-        private class TestStepConfig
-        {
-            private readonly string _re;
-            private readonly string _handler;
-            public TestStepConfig(string re, string handler)
-            {
-                _re = re;
-                _handler = handler;
-            }
 
-            public string GetRe()
-            {
-                return _re;
-            }
-
-            public string GetHandler()
-            {
-                return _handler;
-            }
-        }
-        private static readonly TestStepConfig[] reTestStep = new TestStepConfig[] { 
-            new TestStepConfig(@"^(\bTitle\sShould\sBe\s\b)", "rf2cy.Handler.TitleShouldBe" ),
-            new TestStepConfig(@"^(\bGo\sTo\b)", "rf2cy.Handler.GoTo" )
-        };
-        private const string handlerDefault = "rf2cy.Handler.SingleLineComment";
-        private const string reSpaceClean = @"(\s{2,})|(\t{1,})";
-        private const string reNotTestCaseLine = @"^((\s)|(\t)|(\b\*\*\*\b)|(\b\.\.\.\b)|(\b${\b)|(\bDocumentation\b)|(\bLibrary\b))";
-        private const string testCaseNamePlaceholder = @"//##TEST_CASE_NAME##";
-        private const string testStepPlaceholder = @"//##TEST_STEPS##";
-        private const string inputExtension = ".robot";
-        private const string outputExtension = ".spec.js";
+        private static readonly Settings s = new();
 
         private static void Main(string[] args)
         {
@@ -48,18 +20,15 @@ namespace rf2cy
                 }
 
                 string[] lines = File.ReadAllLines(args[0]);
-                string outputFile = string.Concat(args[0].Replace(inputExtension,string.Empty), outputExtension);
+                string outputFile = string.Concat(args[0].Replace(s.InputExtension,string.Empty), s.OutputExtension);
                 string testSuiteTemplate = File.ReadAllText(args[1]);
                 string testCaseTemplate = File.ReadAllText(args[2]);
                 string testStepTemplate = File.ReadAllText(args[3]);
-
                 string testCaseSection = string.Empty;
                 string testStepSection = string.Empty;
-
                 string testSuiteDocument = string.Empty;
                 string testCaseDocument = string.Empty;
                 string testStepDocument = string.Empty;
-
                 string testCase = string.Empty;
                 string testCaseCurrent = string.Empty;
                 string testLine = string.Empty;
@@ -74,12 +43,12 @@ namespace rf2cy
                     {                        
                         if (testCaseCurrent != string.Empty)
                         {
-                            testCaseSection = testCaseSection.Replace(testStepPlaceholder, testStepSection);
+                            testCaseSection = testCaseSection.Replace(s.TestStepPlaceholder, testStepSection);
                         }
 
                         testSuiteDocument += testCaseSection;
                         testCaseCurrent = testCase;
-                        testCaseSection = testCaseTemplate.Replace(testCaseNamePlaceholder, testCaseCurrent);
+                        testCaseSection = testCaseTemplate.Replace(s.TestCaseNamePlaceholder, testCaseCurrent);
                         testStepSection = string.Empty;
                         Console.WriteLine("Case:\t[{0}]", testCaseCurrent);
                         i++;
@@ -97,7 +66,7 @@ namespace rf2cy
                     {
                         if (testCaseCurrent != string.Empty)
                         {
-                            testCaseSection = testCaseSection.Replace(testStepPlaceholder, testStepSection);
+                            testCaseSection = testCaseSection.Replace(s.TestStepPlaceholder, testStepSection);
                             testSuiteDocument += testCaseSection;
                         }
                     }
@@ -118,12 +87,12 @@ namespace rf2cy
             {
                 return string.Empty;
             };
-            Regex regex = new(reNotTestCaseLine, RegexOptions.None);
+            Regex regex = new(s.ReNotTestCaseLine, RegexOptions.None);
             if (regex.IsMatch(line))
             {
                 return string.Empty;
             }
-            regex = new(reSpaceClean, RegexOptions.None);
+            regex = new(s.ReSpaceClean, RegexOptions.None);
             return regex.Replace(line, " ").Trim();
         }
 
@@ -133,7 +102,7 @@ namespace rf2cy
             {
                 return string.Empty;
             }
-            Regex regex = new(reSpaceClean, RegexOptions.None);
+            Regex regex = new(s.ReSpaceClean, RegexOptions.None);
             return regex.Replace(line, " ").Trim();
         }
 
@@ -157,12 +126,16 @@ namespace rf2cy
         {
             try
             {
-                foreach(TestStepConfig re in reTestStep)
+                if (s.TestStepConfigs == null)
                 {
-                    Regex regex = new(re.GetRe(), RegexOptions.None);
+                    return ExecuteHandler(s.HandlerDefault, line, string.Empty);
+                }
+                foreach(Settings.TestStepConfig re in s.TestStepConfigs)
+                {
+                    Regex regex = new(re.Re, RegexOptions.None);
                     if (regex.IsMatch(line))
                     {
-                        string newLine = ExecuteHandler(re.GetHandler(), line, re.GetRe());
+                        string newLine = ExecuteHandler(re.Handler, line, re.Re);
                         if(!string.IsNullOrEmpty(newLine))
                         {
                             return newLine;
@@ -173,9 +146,9 @@ namespace rf2cy
             }
             catch(Exception)
             {
-                return ExecuteHandler(handlerDefault, line, string.Empty);
+                return ExecuteHandler(s.HandlerDefault, line, string.Empty);
             }
-            return ExecuteHandler(handlerDefault, line, string.Empty);
+            return ExecuteHandler(s.HandlerDefault, line, string.Empty);
         }
     }
 }

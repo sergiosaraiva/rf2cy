@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "rf2cy": {
+      "commandName": "Project",
+      "commandLineArgs": "Sample.robot TestSuite.default.js TestCase.default.js TestStep.default.js"
+    }
+  }
+}

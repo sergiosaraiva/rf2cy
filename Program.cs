@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace rf2cy
 {
 
-    class Program
+    static class Program
     {
 
         private static readonly Settings s = new();
@@ -19,60 +19,67 @@ namespace rf2cy
                     return;
                 }
 
-                string[] lines = File.ReadAllLines(args[0]);
-                string outputFile = string.Concat(args[0].Replace(s.InputExtension,string.Empty), s.OutputExtension);
                 string testSuiteTemplate = File.ReadAllText(args[1]);
                 string testCaseTemplate = File.ReadAllText(args[2]);
                 string testStepTemplate = File.ReadAllText(args[3]);
-                string testCaseSection = string.Empty;
-                string testStepSection = string.Empty;
-                string testSuiteDocument = string.Empty;
-                string testCaseDocument = string.Empty;
-                string testStepDocument = string.Empty;
-                string testCase = string.Empty;
-                string testCaseCurrent = string.Empty;
-                string testLine = string.Empty;
 
-                int i = 0;
-                int len = lines.Length;
 
-                foreach (string line in lines)
+                string[] files = Directory.GetFiles(".", args[0]);
+
+                foreach (string file in files)
                 {
-                    testCase = ExtractTestCase(line);
-                    if (testCase != string.Empty)
-                    {                        
-                        if (testCaseCurrent != string.Empty)
-                        {
-                            testCaseSection = testCaseSection.Replace(s.TestStepPlaceholder, testStepSection);
-                        }
+                    string outputFile = string.Concat(file.Replace(s.InputExtension, string.Empty), s.OutputExtension);
+                    Console.WriteLine("\n***** Input file: [{0}], output file: [{1}] *****\n", file, outputFile);
 
-                        testSuiteDocument += testCaseSection;
-                        testCaseCurrent = testCase;
-                        testCaseSection = testCaseTemplate.Replace(s.TestCaseNamePlaceholder, testCaseCurrent);
-                        testStepSection = string.Empty;
-                        Console.WriteLine("Case:\t[{0}]", testCaseCurrent);
-                        i++;
-                        continue;
-                    }
+                    string[] lines = File.ReadAllLines(file);
+                    string testCaseSection = string.Empty;
+                    string testStepSection = string.Empty;
+                    string testSuiteDocument = string.Empty;
+                    string testCaseDocument = string.Empty;
+                    string testStepDocument = string.Empty;
+                    string testCase = string.Empty;
+                    string testCaseCurrent = string.Empty;
+                    string testLine = string.Empty;
 
-                    testLine = ExtractTestStep(line);
-                    if (testLine != string.Empty && testCaseCurrent != string.Empty)
+                    int i = 0, len = lines.Length;
+
+                    foreach (string line in lines)
                     {
-                        testStepSection += "\t\t" + GenerateTestStep(testLine) + "\n";
-                        Console.WriteLine("\tLine:\t[{0}]", testLine);
-                    }
-
-                    if (++i == len)
-                    {
-                        if (testCaseCurrent != string.Empty)
+                        testCase = ExtractTestCase(line);
+                        if (testCase != string.Empty)
                         {
-                            testCaseSection = testCaseSection.Replace(s.TestStepPlaceholder, testStepSection);
+                            if (testCaseCurrent != string.Empty)
+                            {
+                                testCaseSection = testCaseSection.Replace(s.TestStepPlaceholder, testStepSection);
+                            }
+
                             testSuiteDocument += testCaseSection;
+                            testCaseCurrent = testCase;
+                            testCaseSection = testCaseTemplate.Replace(s.TestCaseNamePlaceholder, testCaseCurrent);
+                            testStepSection = string.Empty;
+                            Console.WriteLine("Case:\t[{0}]", testCaseCurrent);
+                            i++;
+                            continue;
+                        }
+
+                        testLine = ExtractTestStep(line);
+                        if (testLine != string.Empty && testCaseCurrent != string.Empty)
+                        {
+                            testStepSection += "\t\t" + GenerateTestStep(testLine) + "\n";
+                            Console.WriteLine("\tLine:\t[{0}]", testLine);
+                        }
+
+                        if (++i == len)
+                        {
+                            if (testCaseCurrent != string.Empty)
+                            {
+                                testCaseSection = testCaseSection.Replace(s.TestStepPlaceholder, testStepSection);
+                                testSuiteDocument += testCaseSection;
+                            }
                         }
                     }
+                    File.WriteAllText(outputFile, testSuiteDocument);
                 }
-                Console.WriteLine("\n{0}", testSuiteDocument);
-                File.WriteAllText(outputFile, testSuiteDocument);
             }
             catch (Exception e)
             {
@@ -130,13 +137,13 @@ namespace rf2cy
                 {
                     return ExecuteHandler(s.HandlerDefault, line, string.Empty);
                 }
-                foreach(Settings.TestStepConfig re in s.TestStepConfigs)
+                foreach (Settings.TestStepConfig re in s.TestStepConfigs)
                 {
                     Regex regex = new(re.Re, RegexOptions.None);
                     if (regex.IsMatch(line))
                     {
                         string newLine = ExecuteHandler(re.Handler, line, re.Re);
-                        if(!string.IsNullOrEmpty(newLine))
+                        if (!string.IsNullOrEmpty(newLine))
                         {
                             return newLine;
                         }
@@ -144,7 +151,7 @@ namespace rf2cy
                     }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return ExecuteHandler(s.HandlerDefault, line, string.Empty);
             }

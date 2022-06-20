@@ -9,8 +9,6 @@
         cy.signOut()
     })
 
-    /*
     //##TEST_STEPS##
-    */
 })
 

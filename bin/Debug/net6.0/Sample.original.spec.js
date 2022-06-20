@@ -9,10 +9,8 @@ describe('*** Settings ***', () => {
         cy.signOut()
     })
 
-    /*
     		// Documentation A resource file with reusable keywords and variables.
 
-    */
 })
 
 describe('...', () => {
@@ -26,9 +24,7 @@ describe('...', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('... The system specific keywords created here form our own', () => {
@@ -42,9 +38,7 @@ describe('... The system specific keywords created here form our own', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('... domain specific language.They utilize keywords provided', () => {
@@ -58,9 +52,7 @@ describe('... domain specific language.They utilize keywords provided', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('... by the imported SeleniumLibrary.', () => {
@@ -74,10 +66,8 @@ describe('... by the imported SeleniumLibrary.', () => {
         cy.signOut()
     })
 
-    /*
     		// Library SeleniumLibrary
 
-    */
 })
 
 describe('*** Variables ***', () => {
@@ -91,9 +81,7 @@ describe('*** Variables ***', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('${SERVER} localhost: 7272', () => {
@@ -107,9 +95,7 @@ describe('${SERVER} localhost: 7272', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('${BROWSER} Firefox', () => {
@@ -123,9 +109,7 @@ describe('${BROWSER} Firefox', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('${DELAY} 0', () => {
@@ -139,9 +123,7 @@ describe('${DELAY} 0', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('${VALID USER} demo', () => {
@@ -155,9 +137,7 @@ describe('${VALID USER} demo', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('${VALID PASSWORD} mode', () => {
@@ -171,9 +151,7 @@ describe('${VALID PASSWORD} mode', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('${LOGIN URL} http://${SERVER}/', () => {
@@ -187,9 +165,7 @@ describe('${LOGIN URL} http://${SERVER}/', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('${WELCOME URL} http://${SERVER}/welcome.html', () => {
@@ -203,9 +179,7 @@ describe('${WELCOME URL} http://${SERVER}/welcome.html', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('${ERROR URL} http://${SERVER}/error.html', () => {
@@ -219,9 +193,7 @@ describe('${ERROR URL} http://${SERVER}/error.html', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('*** Keywords ***', () => {
@@ -235,9 +207,7 @@ describe('*** Keywords ***', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('*** Open Browser To Login Page', () => {
@@ -251,9 +221,7 @@ describe('*** Open Browser To Login Page', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('*** Open Browser ${LOGIN URL} ${BROWSER}', () => {
@@ -267,9 +235,7 @@ describe('*** Open Browser ${LOGIN URL} ${BROWSER}', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('*** Maximize Browser Window', () => {
@@ -283,9 +249,7 @@ describe('*** Maximize Browser Window', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('*** Set Selenium Speed ${DELAY}', () => {
@@ -299,9 +263,7 @@ describe('*** Set Selenium Speed ${DELAY}', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('*** Login Page Should Be Open', () => {
@@ -315,9 +277,7 @@ describe('*** Login Page Should Be Open', () => {
         cy.signOut()
     })
 
-    /*
     
-    */
 })
 
 describe('Login Page Should Be Open', () => {
@@ -331,14 +291,12 @@ describe('Login Page Should Be Open', () => {
         cy.signOut()
     })
 
-    /*
     		// Title Should Be Login Page
 		it('TitleShouldBe', () => {
 			cy.title().should('eq', 'Login Page')
 		})
 
 
-    */
 })
 
 describe('Go To Login Page', () => {
@@ -352,13 +310,11 @@ describe('Go To Login Page', () => {
         cy.signOut()
     })
 
-    /*
     		// Go To ${LOGIN URL}
 		cy.visit('${LOGIN URL}')
 
 		// Login Page Should Be Open
 
-    */
 })
 
 describe('Input Username', () => {
@@ -372,11 +328,9 @@ describe('Input Username', () => {
         cy.signOut()
     })
 
-    /*
     		// [Arguments] ${username}
 		// Input Text username_field ${username}
 
-    */
 })
 
 describe('Input Password', () => {
@@ -390,11 +344,9 @@ describe('Input Password', () => {
         cy.signOut()
     })
 
-    /*
     		// [Arguments] ${password}
 		// Input Text password_field ${password}
 
-    */
 })
 
 describe('Submit Credentials', () => {
@@ -408,10 +360,8 @@ describe('Submit Credentials', () => {
         cy.signOut()
     })
 
-    /*
     		// Click Button login_button
 
-    */
 })
 
 describe('Welcome Page Should Be Open', () => {
@@ -425,7 +375,6 @@ describe('Welcome Page Should Be Open', () => {
         cy.signOut()
     })
 
-    /*
     		// Location Should Be ${WELCOME URL}
 		// Title Should Be Welcome Page
 		it('TitleShouldBe', () => {
@@ -433,6 +382,5 @@ describe('Welcome Page Should Be Open', () => {
 		})
 
 
-    */
 })
 

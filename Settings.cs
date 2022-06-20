@@ -18,23 +18,27 @@ namespace rf2cy
         public string TestStepPlaceholder { get; }
         public string InputExtension { get; }
         public string OutputExtension { get; }
+        public string TestStepParameter { get; }
         public List<TestStepConfig> TestStepConfigs { get; }
 
         public class TestStepConfig
         {
-            public string Re { get; }
+            public string ReLine { get; }
+            public string ReParam { get; }
             public string Handler { get; }
 
             public TestStepConfig()
             {
-                Re = string.Empty;
+                ReLine = string.Empty;
+                ReParam = string.Empty;
                 Handler = string.Empty;
             }
 
-            public TestStepConfig(string re, string handler)
+            public TestStepConfig(string reLine, string reParam, string handler)
             {
-                Re = re;
+                ReLine = reLine;
                 Handler = handler;
+                ReParam = reParam;
             }
         }
 
@@ -49,24 +53,30 @@ namespace rf2cy
             TestStepPlaceholder = (string)Config.GetValue(typeof(string), "testStepPlaceholder");
             InputExtension = (string)Config.GetValue(typeof(string), "inputExtension");
             OutputExtension = (string)Config.GetValue(typeof(string), "outputExtension");
+            TestStepParameter = (string)Config.GetValue(typeof(string), "testStepParameter");
             TestStepConfigs = new List<TestStepConfig>();
 
             foreach (var test in Config.GetSection("testStepConfig").GetChildren())
             {
-                string re = string.Empty;
+                string reLine = string.Empty;
+                string reParam = string.Empty;
                 string handler = string.Empty;
                 foreach (var sa in test.GetChildren().ToDictionary(x => x.Key, x => x.Value))
                 {
-                    if (sa.Key == "re")
+                    if (sa.Key == "reLine")
                     {
-                        re = sa.Value;
+                        reLine = sa.Value;
+                    }
+                    if (sa.Key == "reParam")
+                    {
+                        reParam = sa.Value;
                     }
                     if (sa.Key == "handler")
                     {
                         handler = sa.Value;
                     }
                 }
-                TestStepConfigs.Add(new TestStepConfig(re,handler));
+                TestStepConfigs.Add(new TestStepConfig(reLine, reParam, handler));
             }
         }
     }

@@ -16,6 +16,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Sample2.robot">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Sample.original.robot">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

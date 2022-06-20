@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 
 namespace rf2cy
 {
-
     static class Program
     {
 
@@ -22,7 +21,6 @@ namespace rf2cy
                 string testSuiteTemplate = File.ReadAllText(args[1]);
                 string testCaseTemplate = File.ReadAllText(args[2]);
                 string testStepTemplate = File.ReadAllText(args[3]);
-
 
                 string[] files = Directory.GetFiles(".", args[0]);
 
@@ -113,7 +111,7 @@ namespace rf2cy
             return regex.Replace(line, " ").Trim();
         }
 
-        private static string ExecuteHandler(string handler, string line, string re)
+        private static string ExecuteHandler(string handler, string line, string reLine, string reParam)
         {
             string[] h = handler!.Split('.');
             if (h.Length > 0)
@@ -123,7 +121,7 @@ namespace rf2cy
                 Console.WriteLine("\tHandler: Class: [{0}]; Method: [{1}]", className, methodName);
                 if (!(string.IsNullOrEmpty(className) || string.IsNullOrEmpty(methodName)))
                 {
-                    return Type.GetType(className)!.GetMethod(methodName)!.Invoke(null, new object[] { line, re })!.ToString() ?? string.Empty;
+                    return Type.GetType(className)!.GetMethod(methodName)!.Invoke(null, new object[] { line, reLine, reParam })!.ToString() ?? string.Empty;
                 }
             }
             return string.Empty;
@@ -135,14 +133,14 @@ namespace rf2cy
             {
                 if (s.TestStepConfigs == null)
                 {
-                    return ExecuteHandler(s.HandlerDefault, line, string.Empty);
+                    return ExecuteHandler(s.HandlerDefault, line, string.Empty, string.Empty);
                 }
                 foreach (Settings.TestStepConfig re in s.TestStepConfigs)
                 {
-                    Regex regex = new(re.Re, RegexOptions.None);
+                    Regex regex = new(re.ReLine, RegexOptions.None);
                     if (regex.IsMatch(line))
                     {
-                        string newLine = ExecuteHandler(re.Handler, line, re.Re);
+                        string newLine = ExecuteHandler(re.Handler, line, re.ReLine, re.ReParam);
                         if (!string.IsNullOrEmpty(newLine))
                         {
                             return newLine;
@@ -153,9 +151,9 @@ namespace rf2cy
             }
             catch (Exception)
             {
-                return ExecuteHandler(s.HandlerDefault, line, string.Empty);
+                return ExecuteHandler(s.HandlerDefault, line, string.Empty, string.Empty);
             }
-            return ExecuteHandler(s.HandlerDefault, line, string.Empty);
+            return ExecuteHandler(s.HandlerDefault, line, string.Empty, string.Empty);
         }
     }
 }

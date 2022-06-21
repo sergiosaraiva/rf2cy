@@ -52,5 +52,16 @@ namespace rf2cy
             "\t\t\tcy.get('.breadcrumbTitle').should('include.text', ", p.Length > 0 ? p[0]: string.Empty, ")\n",
             "\t\t})\n");
         }
+
+        public static string CompareGetTitle(string line, string reLine, string reParam)
+        {
+            string[] p = GetParameters(line, reParam);
+            return string.Concat(SingleLineComment(line, reLine, reParam),
+            "\n\t\tit('verify the title of the screen', () => {\n",
+            "\t\t\tcy.signIn(Cypress.env('adminUser'), Cypress.env('adminPass'))\n",
+            "\t\t\tcy.visit(", p.Length > 0 ? p[0] : string.Empty, ")\n",
+            "\t\t\tcy.title().should('eq',", p.Length > 0 ? p[0] : string.Empty, ")\n",
+            "\t\t})\n");
+        }
     }
 }

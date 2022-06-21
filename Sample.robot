@@ -20,3 +20,4 @@ Welcome Page Should Be Open
     Location Should Be    ${WELCOME URL}
     Title Should Be Welcome Page
     Verify Element Breadcrumbs 'Configuration > System structures > Accounts > Calculated accounts'
+    Get Title equal workflow

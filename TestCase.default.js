@@ -2,7 +2,6 @@
 
     beforeEach(() => {
         cy.signIn(Cypress.env('adminUser'), Cypress.env('adminPass'))
-        cy.visit('configuration/accountsflows')
     })
 
     afterEach(() => {

@@ -10,6 +10,27 @@ namespace rf2cy
 {
     public static class Handler
     {
+        private static string GetParsedParameter(string line, int index, string paramSeparator)
+        {
+            string[] p = line.Split(new char[] { ' ', '\t' });
+            if (p.Length == 0 || p.Length < index)
+            {
+                return string.Empty;
+            }
+
+            if(string.IsNullOrEmpty(paramSeparator))
+            {
+                return p[index];
+            }
+
+            string[] r = p[index].Split(paramSeparator);
+            if (r.Length == 0)
+            {
+                return p[index];
+            }
+
+            return r[1];
+        }
         private static string GetLastParameter(string line, string reLine)
         {
             Regex regex = new(reLine, RegexOptions.None);

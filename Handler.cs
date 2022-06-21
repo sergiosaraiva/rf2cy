@@ -19,12 +19,12 @@ namespace rf2cy
         private static string[] GetParameters(string line, string reParam)
         {
             Regex regex = new(reParam, RegexOptions.None);
-            List<string> parameters = new();
+            List<string> p = new();
             foreach(Match m in regex.Matches(line))
             {
-                parameters.Add(m.Value.Trim());
+                p.Add(m.Value.Trim());
             }
-            return parameters.ToArray();
+            return p.ToArray();
         }
         public static string SingleLineComment(string line, string reLine, string reParam)
         {

@@ -66,10 +66,22 @@ namespace rf2cy
             }
             return p.ToArray();
         }
+
+        private static string GetSymbolEquivalent(string line)
+        {
+            if (line.Contains("*="))
+            {
+                return "contain";
+            }
+
+            return string.Empty;
+        }
+
         public static string SingleLineComment(string line, string reLine, string reParam)
         {
             return string.Concat("// ", line);
         }
+
         public static string TitleShouldBe(string line, string reLine, string reParam)
         {
             return string.Concat(SingleLineComment(line, reLine, reParam),
@@ -87,7 +99,7 @@ namespace rf2cy
         public static string Click(string line, string reLine, string reParam)
         {
             return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
-                "\t\tcy.get('", GetParsedParameter(line, 1, "="), "').click()\n");
+                "\t\tcy.get('#", GetParsedParameter(line, 1, "="), "').click()\n");
         }
 
         public static string WaitForElementsState(string line, string reLine, string reParam)
@@ -105,7 +117,7 @@ namespace rf2cy
         public static string GetText(string line, string reLine, string reParam)
         {
             return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
-                "\t\tcy.get('", GetParsedParameter(line, 2, "="), "').find('option').should('contain', '", GetParametersByIndex(line, 4, 7), "')\n");
+                "\t\tcy.get('#", GetParsedParameter(line, 2, "="), "').find('option').should('", GetSymbolEquivalent(line), "', '", GetParametersByIndex(line, 4, 7), "')\n");
         }
 
         public static string VerifyBreadcrumbs(string line, string reLine, string reParam)

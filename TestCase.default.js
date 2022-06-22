@@ -8,6 +8,8 @@
         cy.signOut()
     })
 
-    //##TEST_STEPS##
+    it('//##TEST_CASE_NAME##', () => {
+        //##TEST_STEPS##
+    })
 })
 

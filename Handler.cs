@@ -31,6 +31,25 @@ namespace rf2cy
 
             return r[1];
         }
+
+        private static string GetParametersByIndex(string line, int initialIndex, int finalIndex)
+        {
+            string[] p = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            
+            if (p.Length == 0 || p.Length < initialIndex)
+            {
+                return string.Empty;
+            }
+
+            string result = string.Empty;
+            for(int i=initialIndex; i <= finalIndex; i++)
+            {
+                result = string.Concat(result, p[i] + " ");
+            }
+
+            return result.Remove(result.Length-1);
+        }
+
         private static string GetLastParameter(string line, string reLine)
         {
             Regex regex = new(reLine, RegexOptions.None);
@@ -74,19 +93,19 @@ namespace rf2cy
         public static string WaitForElementsState(string line, string reLine, string reParam)
         {
             return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
-                "\t\tcy.get('", GetParsedParameter(line, 4, "="), "').click()\n");
+                "\t\tcy.get('#", GetParsedParameter(line, 4, "="), "').should('be.", GetParsedParameter(line, 5, string.Empty), "')\n");
         }
 
         public static string FillText(string line, string reLine, string reParam)
         {
             return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
-                "\t\tcy.get('", GetParsedParameter(line, 1, "="), "').click()\n");
+                "\t\tcy.get('#", GetParsedParameter(line, 2, "="), "').type('", GetParametersByIndex(line, 3, 6), "')\n");
         }
 
         public static string GetText(string line, string reLine, string reParam)
         {
             return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
-                "\t\tcy.get('", GetParsedParameter(line, 1, "="), "').click()\n");
+                "\t\tcy.get('", GetParsedParameter(line, 2, "="), "').find('option').should('contain', '", GetParametersByIndex(line, 4, 7), "')\n");
         }
 
         public static string VerifyBreadcrumbs(string line, string reLine, string reParam)

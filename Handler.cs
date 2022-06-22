@@ -12,7 +12,7 @@ namespace rf2cy
     {
         private static string GetParsedParameter(string line, int index, string paramSeparator)
         {
-            string[] p = line.Split(new char[] { ' ', '\t' });
+            string[] p = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
             if (p.Length == 0 || p.Length < index)
             {
                 return string.Empty;
@@ -63,6 +63,30 @@ namespace rf2cy
         {
             return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
                 "\t\tcy.visit('", GetLastParameter(line, reLine), "')\n");
+        }
+
+        public static string Click(string line, string reLine, string reParam)
+        {
+            return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
+                "\t\tcy.get('", GetParsedParameter(line, 1, "="), "').click()\n");
+        }
+
+        public static string WaitForElementsState(string line, string reLine, string reParam)
+        {
+            return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
+                "\t\tcy.get('", GetParsedParameter(line, 4, "="), "').click()\n");
+        }
+
+        public static string FillText(string line, string reLine, string reParam)
+        {
+            return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
+                "\t\tcy.get('", GetParsedParameter(line, 1, "="), "').click()\n");
+        }
+
+        public static string GetText(string line, string reLine, string reParam)
+        {
+            return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
+                "\t\tcy.get('", GetParsedParameter(line, 1, "="), "').click()\n");
         }
 
         public static string VerifyBreadcrumbs(string line, string reLine, string reParam)

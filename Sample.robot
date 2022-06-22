@@ -21,3 +21,4 @@ Welcome Page Should Be Open
     Title Should Be Welcome Page
     Verify Element Breadcrumbs 'Configuration > System structures > Accounts > Calculated accounts'
     Get Title equal workflow
+    Click btnAddList

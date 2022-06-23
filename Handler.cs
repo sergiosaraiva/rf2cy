@@ -74,6 +74,16 @@ namespace rf2cy
                 return "contain";
             }
 
+            if (line.Contains("=="))
+            {
+                return "eq";
+            }
+
+            if (line.Contains("!="))
+            {
+                return "not.equal";
+            }
+
             return string.Empty;
         }
 

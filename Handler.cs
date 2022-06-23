@@ -90,6 +90,18 @@ namespace rf2cy
                 "\t\t})\n");
         }
 
+        public static string GetTitle(string line, string reLine, string reParam)
+        {
+            return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
+                "\t\tcy.title().should('eq', '", GetLastParameter(line, reLine), "')\n");
+        }
+
+        public static string OpenBrowser(string line, string reLine, string reParam)
+        {
+            return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
+                "\t\tcy.signIn(Cypress.env('adminUser'), Cypress.env('adminPass'))\n");
+        }
+
         public static string GoTo(string line, string reLine, string reParam)
         {
             return string.Concat(SingleLineComment(line, reLine, reParam), "\n",

@@ -1,4 +1,2 @@
 Welcome Page Should Be Open
-    OpenBrowser
-    Go To       https://qt.sigmaconso.com/dev/consolidation35/workflow
-    Get Title   equal   Workflow
+	Click	css=nth-child(5) > .col-sm-12 > .checkbox-container > .col-form-label

@@ -108,8 +108,7 @@ namespace rf2cy
 
         public static string OpenBrowser(string line, string reLine, string reParam)
         {
-            return string.Concat(SingleLineComment(line, reLine, reParam), "\n",
-                "\t\tcy.signIn(Cypress.env('adminUser'), Cypress.env('adminPass'))\n");
+            return string.Concat("\t\tcy.signIn(Cypress.env('adminUser'), Cypress.env('adminPass'))\n");
         }
 
         public static string GoTo(string line, string reLine, string reParam)
@@ -160,6 +159,11 @@ namespace rf2cy
             "\t\t\tcy.visit(", p.Length > 0 ? p[0] : string.Empty, ")\n",
             "\t\t\tcy.title().should('eq',", p.Length > 0 ? p[0] : string.Empty, ")\n",
             "\t\t})\n");
+        }
+        public static string Css(string line, string reLine, string reParam)
+        {
+            return string.Concat(SingleLineComment(line, reLine, reParam),
+            "\n\t\tcy.get('", Regex.Replace(line, reLine, "", RegexOptions.IgnoreCase), "').click()\n");
         }
     }
 }
